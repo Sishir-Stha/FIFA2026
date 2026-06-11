@@ -3,8 +3,7 @@ import { browser } from '$app/environment';
 export type LanguageCode = 'nb' | 'nn' | 'en';
 
 const STORAGE_KEY = 'language';
-const DEFAULT_LANGUAGE: LanguageCode = 'nb';
-const LANGUAGE_ORDER: LanguageCode[] = ['nb', 'nn', 'en'];
+const DEFAULT_LANGUAGE: LanguageCode = 'en';
 
 export function isLanguageCode(value: unknown): value is LanguageCode {
 	return value === 'nb' || value === 'nn' || value === 'en';
@@ -12,8 +11,8 @@ export function isLanguageCode(value: unknown): value is LanguageCode {
 
 function readStoredLanguage(): LanguageCode {
 	if (!browser) return DEFAULT_LANGUAGE;
-	const stored = localStorage.getItem(STORAGE_KEY);
-	return isLanguageCode(stored) ? stored : DEFAULT_LANGUAGE;
+	localStorage.setItem(STORAGE_KEY, DEFAULT_LANGUAGE);
+	return DEFAULT_LANGUAGE;
 }
 
 class LanguageStore {
@@ -47,14 +46,13 @@ class LanguageStore {
 		return nb;
 	}
 
-	set(next: LanguageCode) {
-		this.code = next;
-		if (browser) localStorage.setItem(STORAGE_KEY, next);
+	set(_next: LanguageCode) {
+		this.code = DEFAULT_LANGUAGE;
+		if (browser) localStorage.setItem(STORAGE_KEY, DEFAULT_LANGUAGE);
 	}
 
 	toggle() {
-		const currentIndex = LANGUAGE_ORDER.indexOf(this.code);
-		this.set(LANGUAGE_ORDER[(currentIndex + 1) % LANGUAGE_ORDER.length]);
+		this.set(DEFAULT_LANGUAGE);
 	}
 }
 

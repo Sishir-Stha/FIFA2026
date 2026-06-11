@@ -6,7 +6,7 @@
 import { build, files, version } from '$service-worker';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
-const CACHE = `wmtips-${version}`;
+const CACHE = `yeti-airlines-${version}`;
 
 // Precache the app shell + light static assets. Skip the heavy stuff
 // (flags / screenshots) — those are cached on demand instead.

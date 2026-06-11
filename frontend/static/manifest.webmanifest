@@ -1,9 +1,9 @@
 {
   "id": "/",
-  "name": "VM Tipping",
-  "short_name": "VM Tipping",
-  "description": "Kamptips og VM-tips for fotball-VM 2026.",
-  "lang": "no",
+  "name": "Yeti Airlines",
+  "short_name": "Yeti Airlines",
+  "description": "World Cup 2026 match tips, leagues, points and chat.",
+  "lang": "en",
   "dir": "ltr",
   "start_url": "/",
   "scope": "/",
@@ -21,9 +21,9 @@
     { "src": "/icons/maskable_icon_x512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "screenshots": [
-    { "src": "/screenshots/pwa-mobile-home.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow", "label": "Oversikt over manglende kamptips" },
-    { "src": "/screenshots/pwa-mobile-kamptips.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow", "label": "Gi kamptips direkte fra mobilen" },
-    { "src": "/screenshots/pwa-desktop-home.png", "sizes": "1140x834", "type": "image/png", "form_factor": "wide", "label": "Oversikt over manglende kamptips og VM-tips" },
-    { "src": "/screenshots/pwa-desktop-kamptips.png", "sizes": "1140x834", "type": "image/png", "form_factor": "wide", "label": "Gi kamptips direkte i kampoversikten" }
+    { "src": "/screenshots/pwa-mobile-home.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow", "label": "Overview of missing match tips" },
+    { "src": "/screenshots/pwa-mobile-kamptips.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow", "label": "Submit match tips from mobile" },
+    { "src": "/screenshots/pwa-desktop-home.png", "sizes": "1140x834", "type": "image/png", "form_factor": "wide", "label": "Overview of match and World Cup tips" },
+    { "src": "/screenshots/pwa-desktop-kamptips.png", "sizes": "1140x834", "type": "image/png", "form_factor": "wide", "label": "Submit match tips from the match overview" }
   ]
 }

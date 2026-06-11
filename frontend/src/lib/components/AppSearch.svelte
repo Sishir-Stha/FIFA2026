@@ -58,7 +58,9 @@
 				api
 					.myLeagues()
 					.then((res) => {
-						leagues = res.leagues ?? [];
+						leagues = (res.leagues ?? []).filter(
+							(league) => league.inviteCode === 'GLOBAL'
+						);
 						leaguesLoaded = true;
 					})
 					.catch(() => {

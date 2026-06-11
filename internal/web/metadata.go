@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	inviteOGTitle       = "Bli med i min tippekonkurranse for VM på Midttunet!"
-	inviteOGDescription = "Klikk her for å utfordre meg."
+	inviteOGTitle       = "Join my World Cup prediction league on Yeti Airlines!"
+	inviteOGDescription = "Open the invitation to compete with me."
 	inviteOGImagePath   = "/screenshots/Frontpage.png"
 )
 
@@ -58,9 +58,9 @@ func RegisterInviteMetadata(app core.App, se *core.ServeEvent) {
 
 func invitePageTitle(leagueName string) string {
 	if leagueName == "" {
-		return "VM Tipping · Midttunet"
+		return "Yeti Airlines"
 	}
-	return "Bli med i " + leagueName + " · VM Tipping"
+	return "Join " + leagueName + " · Yeti Airlines"
 }
 
 func injectInviteMetadata(index string, meta inviteMeta) string {
@@ -86,12 +86,12 @@ func renderInviteMeta(meta inviteMeta) string {
 	values := []string{
 		metaName("description", meta.Description),
 		metaProperty("og:type", "website"),
-		metaProperty("og:site_name", "VM Tipping"),
+		metaProperty("og:site_name", "Yeti Airlines"),
 		metaProperty("og:title", meta.Title),
 		metaProperty("og:description", meta.Description),
 		metaProperty("og:url", meta.URL),
 		metaProperty("og:image", meta.ImageURL),
-		metaProperty("og:image:alt", "VM Tipping på Midttunet"),
+		metaProperty("og:image:alt", "Yeti Airlines World Cup prediction game"),
 		metaName("twitter:card", "summary_large_image"),
 		metaName("twitter:title", meta.Title),
 		metaName("twitter:description", meta.Description),

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { auth } from '$lib/auth.svelte';
 	import { language } from '$lib/language.svelte';
 	import Flag from '$lib/components/Flag.svelte';
 	import Logo from '$lib/components/Logo.svelte';
@@ -16,21 +14,16 @@
 		Volleyball
 	} from '@lucide/svelte';
 
-	let busy = $state(false);
-	let error = $state('');
 	let targetIndex = $state(0);
 	const copy = $derived(
 		language.text(
 			{
 				targets: ['kollegaen', 'kompisen'],
 				verb: 'Logg inn og slå',
-				description: 'Bli med venner med VM-tips, ligaer, poeng og chat.',
-				tagline: 'Kamptips og VM-tips med venner',
-				lead: 'Tipp hver kamp, bygg VM-sluttspillet ditt og følg ligadramaet når poengene tikker inn.',
+				description: 'Tipp kamper og konkurrer i den globale ligaen.',
+				tagline: 'Kamptips med venner',
+				lead: 'Tipp hver kamp og følg plasseringen din når poengene tikker inn.',
 				signInActions: 'Innloggingsvalg',
-				openingGoogle: 'Åpner Google...',
-				google: 'Logg inn med Google',
-				useEmail: 'Bruk e-post',
 				createAccount: 'Opprett konto',
 				appPreview: 'Appvisning',
 				nextDeadline: 'Neste frist',
@@ -57,19 +50,15 @@
 				chatMeta: 'Private ligaer, levende reaksjoner',
 				ready: 'Klar før avspark',
 				firstPick: 'Legg inn første tips nå.',
-				login: 'Logg inn',
-				googleFailed: 'Google-innlogging feilet.'
+				login: 'Logg inn'
 			},
 			{
 				targets: ['kollegaen', 'kompisen'],
 				verb: 'Logg inn og vinn over',
-				description: 'Bli med vener med VM-tips, ligaer, poeng og chat.',
-				tagline: 'Kamptips og VM-tips med vener',
-				lead: 'Tipp kvar kamp, bygg VM-braketten din, og følg ligadramaet når poenga kjem inn.',
+				description: 'Tipp kampar og konkurrer i den globale ligaen.',
+				tagline: 'Kamptips med vener',
+				lead: 'Tipp kvar kamp og følg plasseringa di når poenga kjem inn.',
 				signInActions: 'Innloggingsval',
-				openingGoogle: 'Opnar Google...',
-				google: 'Logg inn med Google',
-				useEmail: 'Bruk e-post',
 				createAccount: 'Opprett konto',
 				appPreview: 'Appvising',
 				nextDeadline: 'Neste frist',
@@ -96,19 +85,15 @@
 				chatMeta: 'Private ligaer, levande reaksjonar',
 				ready: 'Klar før avspark',
 				firstPick: 'Legg inn første tips no.',
-				login: 'Logg inn',
-				googleFailed: 'Google-innlogging feila.'
+				login: 'Logg inn'
 			},
 			{
 				targets: ['coworker', 'friend'],
 				verb: 'Log in and beat your',
-				description: 'Join friends for World Cup match tips, leagues, points and chat.',
-				tagline: 'World Cup tips with friends',
-				lead: 'Tip every match, build your World Cup bracket, and follow the league drama as the points land.',
+				description: 'Predict matches and compete in the global league.',
+				tagline: 'Match tips with friends',
+				lead: 'Tip every match, Win exciting rewards',
 				signInActions: 'Sign in actions',
-				openingGoogle: 'Opening Google...',
-				google: 'Log in with Google',
-				useEmail: 'Use email',
 				createAccount: 'Create account',
 				appPreview: 'App preview',
 				nextDeadline: 'Next deadline',
@@ -135,8 +120,7 @@
 				chatMeta: 'Private leagues, live reactions',
 				ready: 'Ready before kickoff',
 				firstPick: 'Make the first pick now.',
-				login: 'Log in',
-				googleFailed: 'Google sign-in failed.'
+				login: 'Log in'
 			}
 		)
 	);
@@ -159,22 +143,10 @@
 		return () => clearInterval(timer);
 	});
 
-	async function google() {
-		error = '';
-		busy = true;
-		try {
-			await auth.loginGoogle();
-			await goto('/');
-	} catch (e: unknown) {
-			error = (e as { message?: string })?.message ?? copy.googleFailed;
-		} finally {
-			busy = false;
-		}
-	}
 </script>
 
 <svelte:head>
-	<title>VM Tipping</title>
+	<title>Yeti Airlines</title>
 	<meta
 		name="description"
 		content={copy.description}
@@ -186,7 +158,7 @@
 		<section class="landing-hero">
 			<div class="hero-copy">
 				<Logo variant="hero" tagline={copy.tagline} />
-				<p class="kicker">VM 2026</p>
+				<p class="kicker">FIFA World Cup 2026</p>
 				<h1 id="landing-title" class="landing-headline">
 					<span class="landing-verb">{landingVerb}</span>
 					<span class="landing-target-slot">
@@ -206,20 +178,10 @@
 				</p>
 
 				<div class="hero-actions" aria-label={copy.signInActions}>
-					<button type="button" class="google" disabled={busy} onclick={google}>
-						<svg class="gsi-logo" viewBox="0 0 48 48" aria-hidden="true">
-							<path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-							<path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-							<path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-							<path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
-						</svg>
-						<span>{busy ? copy.openingGoogle : copy.google}</span>
-					</button>
 					<div class="secondary-actions">
-						<a class="btn secondary" href="/login">{copy.useEmail}</a>
+						<a class="btn" href="/login">{copy.login}</a>
 						<a class="btn ghost" href="/register">{copy.createAccount}</a>
 					</div>
-					{#if error}<p class="error">{error}</p>{/if}
 				</div>
 			</div>
 
@@ -229,7 +191,7 @@
 					<span class="digits">21:00</span>
 				</div>
 				<div class="match-row">
-					<span><Flag iso2="br" code="BRA" size={22} /> Brasil</span>
+					<span><Flag iso2="br" code="BRA" size={22} /> Brazil</span>
 					<strong class="digits">2-1</strong>
 					<span class="right">{copy.norway} <Flag iso2="no" code="NOR" size={22} /></span>
 				</div>
@@ -258,7 +220,7 @@
 						<thead><tr><th>#</th><th>{copy.team}</th><th>P</th><th>GD</th><th>Pts</th></tr></thead>
 						<tbody>
 							<tr><td>1</td><td><Flag iso2="no" code="NOR" size={17} /> {copy.norway}</td><td>3</td><td>+4</td><td>7</td></tr>
-							<tr><td>2</td><td><Flag iso2="de" code="GER" size={17} /> Tyskland</td><td>3</td><td>+2</td><td>6</td></tr>
+							<tr><td>2</td><td><Flag iso2="de" code="GER" size={17} /> Germany</td><td>3</td><td>+2</td><td>6</td></tr>
 							<tr><td>3</td><td><Flag iso2="mx" code="MEX" size={17} /> Mexico</td><td>3</td><td>0</td><td>4</td></tr>
 							<tr><td>4</td><td><Flag iso2="jp" code="JPN" size={17} /> Japan</td><td>3</td><td>-6</td><td>0</td></tr>
 						</tbody>
@@ -303,24 +265,24 @@
 		padding-bottom: 0;
 	}
 	.public-landing {
-		--accent: #8fc58f;
-		--accent-2: #d8b86c;
-		--bg: #071019;
-		--surface: #0b171f;
-		--surface-2: #10242b;
-		--surface-3: #18343a;
-		--border: rgba(214, 190, 128, 0.12);
-		--border-strong: rgba(214, 190, 128, 0.22);
-		--text: #f3f6ee;
-		--muted: #a7b7ae;
-		--gold: #d9bb72;
+		--accent: #31d17f;
+		--accent-2: #d9ad45;
+		--bg: #03140b;
+		--surface: #082117;
+		--surface-2: #0d2d1f;
+		--surface-3: #15432e;
+		--border: rgba(217, 173, 69, 0.13);
+		--border-strong: rgba(217, 173, 69, 0.25);
+		--text: #f1faf4;
+		--muted: #a6c8b5;
+		--gold: #d9ad45;
 		min-height: 100dvh;
 		overflow-x: clip;
 		color: var(--text);
 		background:
-			radial-gradient(80% 42% at 50% 0%, rgba(217, 187, 114, 0.12), transparent 62%),
-			radial-gradient(52% 32% at 80% 12%, rgba(143, 197, 143, 0.13), transparent 70%),
-			linear-gradient(180deg, #081824 0%, #071019 52%, #050a0f 100%);
+			radial-gradient(80% 42% at 50% 0%, rgba(217, 173, 69, 0.13), transparent 62%),
+			radial-gradient(52% 32% at 80% 12%, rgba(0, 166, 81, 0.2), transparent 70%),
+			linear-gradient(180deg, #062419 0%, #03140b 54%, #020c07 100%);
 	}
 	.landing-shell {
 		width: 100%;
@@ -386,32 +348,6 @@
 		min-width: 0;
 		margin-top: 0.35rem;
 	}
-	.google {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 12px;
-		width: 100%;
-		min-height: 48px;
-		padding: 0 16px;
-		background: #ffffff;
-		border: 1px solid #747775;
-		border-radius: 6px;
-		color: #1f1f1f;
-		font-family: 'Roboto', arial, sans-serif;
-		font-size: 15px;
-		font-weight: 600;
-		cursor: pointer;
-	}
-	.google:disabled {
-		opacity: 0.6;
-		cursor: wait;
-	}
-	.gsi-logo {
-		width: 20px;
-		height: 20px;
-		flex: none;
-	}
 	.secondary-actions {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -426,7 +362,7 @@
 	.mock-card {
 		background:
 			radial-gradient(circle at 18% 0%, rgba(217, 187, 114, 0.08), transparent 32%),
-			linear-gradient(180deg, rgba(13, 34, 40, 0.95), rgba(8, 21, 30, 0.98));
+			linear-gradient(180deg, rgba(8, 39, 26, 0.96), rgba(3, 20, 11, 0.98));
 		border-color: var(--border-strong);
 	}
 	.hero-board {
@@ -508,7 +444,7 @@
 		min-height: 44px;
 		border-radius: var(--radius-pill);
 		background: var(--accent-2);
-		color: #071019;
+		color: #03140b;
 		font-weight: 900;
 	}
 	.showcase {

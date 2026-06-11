@@ -10,7 +10,6 @@
 	import { vibrate } from '$lib/haptics';
 	import Flag from './Flag.svelte';
 	import Stepper from './Stepper.svelte';
-	import TvLogo from './TvLogo.svelte';
 	import { teamDisplayName } from '$lib/teamNames';
 	import { Lock, ChevronDown, Check, Users } from '@lucide/svelte';
 	import { language } from '$lib/language.svelte';
@@ -285,9 +284,6 @@
 					: match.roundLabel} · {kickoff}</span
 			>
 			<span class="spacer"></span>
-			{#if match.tvChannel}
-				<TvLogo channel={match.tvChannel} compact />
-			{/if}
 			{#if played}
 				<span class="pill done" class:perfect={pts === 6}>
 					FT
@@ -945,7 +941,7 @@
 	:global(:root[data-theme='worldcup']) .tc {
 		background:
 			radial-gradient(circle at 12% 0%, rgba(143, 197, 143, 0.08), transparent 30%),
-			linear-gradient(180deg, rgba(13, 34, 40, 0.96), rgba(7, 17, 25, 0.98)),
+			linear-gradient(180deg, rgba(8, 39, 26, 0.96), rgba(3, 20, 11, 0.98)),
 			var(--surface);
 		border-color: color-mix(in srgb, var(--accent) 12%, var(--border));
 		box-shadow: 0 16px 42px -34px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.035);

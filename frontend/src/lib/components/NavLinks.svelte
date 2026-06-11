@@ -7,7 +7,6 @@
 	import { navItems, isActive } from '$lib/nav';
 	import { strings } from '$lib/strings';
 	import { tipsStore, isLocked, teamsResolved } from '$lib/tips.svelte';
-	import { forecastStore as fs } from '$lib/forecast.svelte';
 	import { serverClock } from '$lib/serverclock.svelte';
 
 	let { variant = 'tab' as 'tab' | 'rail' } = $props();
@@ -36,17 +35,9 @@
 		}).length;
 	});
 
-	let vmTipsMissing = $derived.by(() => {
-		if (!fs.loaded) return false;
-		return !fs.locked && (!fs.recId || !fs.isComplete);
-	});
-
 	function getBadgeInfo(href: string): { count: number; show: boolean } {
 		if (href === '/tips') {
 			return { count: missingMatchTips, show: missingMatchTips > 0 };
-		}
-		if (href === '/forecast') {
-			return { count: 1, show: vmTipsMissing };
 		}
 		if (href === '/leagues') {
 			const count = leagueInvitations.pendingCount;

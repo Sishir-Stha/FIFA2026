@@ -10,7 +10,7 @@
 		ChevronDown,
 		FlaskConical,
 		Info,
-		Languages,
+		ClipboardCheck,
 		Moon,
 		Settings,
 		Sun,
@@ -78,12 +78,12 @@
 			<a class="item" href="/settings" onclick={() => (open = false)}>
 				<Settings size={17} /> {t.chrome.settings}
 			</a>
+			<a class="item" href="/my-tips" onclick={() => (open = false)}>
+				<ClipboardCheck size={17} /> {language.text('Mine tips', 'Mine tips', 'My tips')}
+			</a>
 			<a class="item" href="/info" onclick={() => (open = false)}>
 				<Info size={17} /> {t.chrome.about}
 			</a>
-			<button class="item" type="button" onclick={() => language.toggle()}>
-				<Languages size={17} /> {t.chrome.language}
-			</button>
 			{#if showThemeAction}
 				<button class="item" type="button" onclick={toggleTheme}>
 					{#if isDark}

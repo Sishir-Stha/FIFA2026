@@ -7,10 +7,10 @@
 		type="button"
 		class="btn install"
 		class:outlined={!pwa.dismissed}
-		aria-label="Installer VM Tipping"
+		aria-label="Install Yeti Airlines"
 		onclick={() => pwa.install()}
 	>
-		Installer
+		Install
 	</button>
 {/if}
 

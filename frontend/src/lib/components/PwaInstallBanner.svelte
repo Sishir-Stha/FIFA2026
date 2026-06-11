@@ -7,7 +7,7 @@
 </script>
 
 {#if pwa.bannerOpen}
-	<div class="banner" role="region" aria-label="Installer app">
+	<div class="banner" role="region" aria-label="Install app">
 		<div class="inner">
 			<img class="appicon" src="/favicon.svg" alt="" />
 			<div class="msg">

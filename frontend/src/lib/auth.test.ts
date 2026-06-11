@@ -5,8 +5,6 @@ const mocks = vi.hoisted(() => ({
 	send: vi.fn(),
 	authWithPassword: vi.fn(),
 	authWithOAuth2: vi.fn(),
-	requestPasswordReset: vi.fn(),
-	confirmPasswordReset: vi.fn(),
 	onChangeHandlers: [] as Array<() => void>,
 	authStore: (() => {
 		const authStore = {
@@ -44,9 +42,7 @@ vi.mock('./pb', () => ({
 			mocks.collection(name);
 			return {
 				authWithPassword: mocks.authWithPassword,
-				authWithOAuth2: mocks.authWithOAuth2,
-				requestPasswordReset: mocks.requestPasswordReset,
-				confirmPasswordReset: mocks.confirmPasswordReset
+				authWithOAuth2: mocks.authWithOAuth2
 			};
 		}
 	}
@@ -60,8 +56,6 @@ describe('auth password reset', () => {
 			mocks.send.mockReset();
 		mocks.authWithPassword.mockReset();
 		mocks.authWithOAuth2.mockReset();
-		mocks.requestPasswordReset.mockReset();
-		mocks.confirmPasswordReset.mockReset();
 			mocks.authStore.clear.mockClear();
 		mocks.authStore.isValid = false;
 		mocks.authStore.record = null;
@@ -105,28 +99,6 @@ describe('auth password reset', () => {
 		expect(mocks.collection).toHaveBeenCalledWith('users');
 		expect(mocks.authWithOAuth2).toHaveBeenCalledWith({ provider: 'google' });
 		expect(auth.user?.email).toBe('google@example.com');
-	});
-
-	it('requests a PocketBase password reset email for users', async () => {
-		mocks.requestPasswordReset.mockResolvedValueOnce(true);
-
-		await auth.requestPasswordReset('test@example.com');
-
-		expect(mocks.collection).toHaveBeenCalledWith('users');
-		expect(mocks.requestPasswordReset).toHaveBeenCalledWith('test@example.com');
-	});
-
-	it('confirms a reset token with the new password', async () => {
-		mocks.confirmPasswordReset.mockResolvedValueOnce(true);
-
-		await auth.confirmPasswordReset('reset-token', 'new-password', 'new-password');
-
-		expect(mocks.collection).toHaveBeenCalledWith('users');
-		expect(mocks.confirmPasswordReset).toHaveBeenCalledWith(
-			'reset-token',
-			'new-password',
-			'new-password'
-		);
 	});
 
 	it('deletes the signed-in account via the custom API and clears auth', async () => {

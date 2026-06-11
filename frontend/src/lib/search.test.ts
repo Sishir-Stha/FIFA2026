@@ -59,7 +59,7 @@ describe('searchApp', () => {
 	});
 
 	it('matches fixtures by team names and builds a tips link', () => {
-		const results = searchApp('brasil', {
+		const results = searchApp('brazil', {
 			matches: [match({ id: 'm-brasil' })],
 			teams,
 			leagues: []
@@ -67,17 +67,17 @@ describe('searchApp', () => {
 
 		expect(results.matches[0]).toMatchObject({
 			id: 'm-brasil',
-			title: 'Norge - Brasil',
+			title: 'Norway - Brazil',
 			href: '/tips?match=m-brasil'
 		});
 	});
 
 	it('matches teams with accent-insensitive queries', () => {
-		const results = searchApp('sor korea', { matches: [], teams, leagues: [] });
+		const results = searchApp('south korea', { matches: [], teams, leagues: [] });
 
 		expect(results.teams[0]).toMatchObject({
 			id: 'southKorea',
-			title: 'Sør-Korea',
+			title: 'South Korea',
 			href: '/tips?team=southKorea'
 		});
 	});
@@ -93,7 +93,7 @@ describe('searchApp', () => {
 	});
 
 	it('matches groups and links to the group section on tips', () => {
-		const results = searchApp('gruppe a', {
+		const results = searchApp('group a', {
 			matches: [
 				match({ id: 'm-a1', homeTeam: 'norway', awayTeam: 'brazil', groupLetter: 'A' }),
 				match({ id: 'm-a2', homeTeam: 'southKorea', awayTeam: 'spain', groupLetter: 'A' })
@@ -104,7 +104,7 @@ describe('searchApp', () => {
 
 		expect(results.groups[0]).toMatchObject({
 			id: 'A',
-			title: 'Gruppe A',
+			title: 'Group A',
 			href: '/tips?group=A'
 		});
 	});
@@ -114,7 +114,7 @@ describe('searchApp', () => {
 			match({ id: `m${index}`, num: index + 1 })
 		);
 
-		const results = searchApp('norge', { matches: manyMatches, teams, leagues }, 3);
+		const results = searchApp('norway', { matches: manyMatches, teams, leagues }, 3);
 
 		expect(results.matches).toHaveLength(3);
 	});

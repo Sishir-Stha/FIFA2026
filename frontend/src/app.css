@@ -139,7 +139,7 @@ h3 {
 :root[data-theme='worldcup'] .card {
 	background:
 		radial-gradient(circle at 18% 0%, rgba(217, 187, 114, 0.055), transparent 32%),
-		linear-gradient(180deg, rgba(13, 34, 40, 0.95), rgba(8, 21, 30, 0.98)),
+		linear-gradient(180deg, rgba(8, 39, 26, 0.96), rgba(3, 20, 11, 0.98)),
 		var(--surface);
 	border-color: var(--border);
 	box-shadow: var(--shadow-tile);
@@ -197,10 +197,10 @@ h3 {
 	gap: 0.5rem;
 	width: 100%;
 	padding: 0.85rem 1.1rem;
-	border: 1px solid var(--text);
+	border: 1px solid var(--accent);
 	border-radius: var(--radius-pill);
-	background: var(--text);
-	color: var(--bg);
+	background: var(--accent);
+	color: var(--accent-fg);
 	font-family: var(--font);
 	font-weight: 700;
 	font-size: 0.95rem;
@@ -214,6 +214,7 @@ h3 {
 .btn:hover:not(:disabled) {
 	transform: translateY(-2px);
 	box-shadow: var(--shadow-pop);
+	filter: brightness(1.05);
 }
 .btn:active:not(:disabled) {
 	transform: translateY(0);
@@ -564,7 +565,7 @@ h3 {
 	:root[data-theme='worldcup'] .siderail {
 		overflow: hidden;
 		background:
-			linear-gradient(180deg, rgba(12, 29, 39, 0.96), rgba(5, 13, 20, 0.98)),
+			linear-gradient(180deg, rgba(8, 39, 26, 0.97), rgba(3, 20, 11, 0.99)),
 			var(--surface);
 		border-right-color: var(--border);
 		box-shadow: inset -1px 0 0 rgba(232, 197, 116, 0.08);

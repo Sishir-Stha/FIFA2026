@@ -6,7 +6,6 @@
 	import { collapseOnScroll } from '$lib/actions';
 	import { serverClock } from '$lib/serverclock.svelte';
 	import { searchNav } from '$lib/searchNav.svelte';
-	import { stageName, stageOrder } from '$lib/stageLabels';
 	import { language } from '$lib/language.svelte';
 	import { LocateFixed } from '@lucide/svelte';
 	import { tick } from 'svelte';
@@ -16,12 +15,12 @@
 		label: string;
 		matches: Match[];
 	};
-	type Tab = 'missing' | 'all' | 'group' | 'ko';
+	type Tab = 'missing' | 'all' | 'group';
 
 	let tab = $state<Tab>('missing');
 	let requestedTab = $derived.by<Tab | ''>(() => {
 		const raw = ($page.url.searchParams.get('tab') ?? '').trim().toLowerCase();
-		if (raw === 'missing' || raw === 'all' || raw === 'group' || raw === 'ko') {
+		if (raw === 'missing' || raw === 'all' || raw === 'group') {
 			return raw;
 		}
 		return '';
@@ -71,7 +70,6 @@
 			if (tab === 'missing')
 				return teamsResolved(m) && !isLocked(m) && !tipsStore.tips[m.id];
 			if (tab === 'group') return m.stage === 'group';
-			if (tab === 'ko') return m.stage !== 'group';
 			return true;
 		})
 	);
@@ -117,8 +115,7 @@
 		document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	}
 
-	// Groups tab: by group letter (A..L). Knockout tab: by stage (R32→FINAL).
-	// All tab: by calendar day.
+	// Groups tab is grouped by letter (A..L); All is grouped by calendar day.
 	function sectionId(label: string) {
 		return label
 			.toLocaleLowerCase('no-NO')
@@ -140,17 +137,6 @@
 					id: `section-group-${letter}`,
 					label: `${language.text('Gruppe', 'Gruppe', 'Group')} ${letter}`,
 					matches: byGroup[letter].sort(byKickoff)
-				}));
-		}
-		if (tab === 'ko') {
-			const byStage: Record<string, Match[]> = {};
-			for (const m of filtered) (byStage[m.stage] ||= []).push(m);
-			return stageOrder
-				.filter((s) => byStage[s])
-				.map((stage) => ({
-					id: `section-stage-${sectionId(stage)}`,
-					label: stageName(stage),
-					matches: byStage[stage].sort(byKickoff)
 				}));
 		}
 		return Object.entries(
@@ -260,6 +246,9 @@
 					'Pick the result for every match. You can change it until kickoff.'
 				)}
 			</p>
+			<a class="my-tips-link" href="/my-tips">
+				{language.text('Se mine tips og resultater', 'Sja mine tips og resultat', 'View my tips and results')}
+			</a>
 			{#if tipsStore.loaded}
 				<p class="muted statusline">
 					{#if missingOpenMatches.length > 0}
@@ -282,9 +271,6 @@
 		<button class:active={tab === 'all'} onclick={() => selectTab('all')}>{language.text('Alle', 'Alle', 'All')}</button>
 		<button class:active={tab === 'group'} onclick={() => selectTab('group')}
 			>{language.text('Grupper', 'Grupper', 'Groups')}</button
-		>
-		<button class:active={tab === 'ko'} onclick={() => selectTab('ko')}
-			>{language.text('Sluttspill', 'Sluttspel', 'Knockout')}</button
 		>
 	</div>
 </div>
@@ -382,6 +368,22 @@
 		margin: 0.45rem 0 0;
 		font-size: 0.82rem;
 		font-weight: 650;
+	}
+	.my-tips-link {
+		display: inline-flex;
+		align-items: center;
+		width: fit-content;
+		margin-top: 0.65rem;
+		padding: 0.4rem 0.7rem;
+		border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+		border-radius: var(--radius-pill);
+		background: color-mix(in srgb, var(--accent) 10%, transparent);
+		color: var(--accent);
+		font-size: 0.78rem;
+		font-weight: 750;
+	}
+	.my-tips-link:hover {
+		background: color-mix(in srgb, var(--accent) 16%, transparent);
 	}
 	@media (min-width: 900px) {
 		.stickyhead {

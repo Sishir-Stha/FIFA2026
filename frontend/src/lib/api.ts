@@ -80,21 +80,6 @@ export interface GoldenBootLeagueTable {
 	updatedAt?: string;
 }
 
-export interface GoldenBootSearchResult {
-	key: string;
-	id?: string;
-	providerId: number;
-	name: string;
-	teamId: string;
-	teamName: string;
-	photoUrl?: string;
-	goals: number;
-	assists: number;
-	rank: number;
-	eligible: boolean;
-	existing: boolean;
-}
-
 export interface ChatOverviewUser {
 	id: string;
 	name: string;
@@ -250,12 +235,6 @@ export const api = {
 			scoring?: Record<string, unknown>;
 			goldenBoot?: GoldenBootLeagueTable;
 		}>(`/api/leagues/${id}/leaderboard`),
-	searchGoldenBootPlayers: (query: string) =>
-		get<{ players: GoldenBootSearchResult[]; apiAvailable: boolean }>(
-			`/api/forecast/topscorers/search?q=${encodeURIComponent(query)}`
-		),
-	ensureGoldenBootPlayer: (player: GoldenBootSearchResult) =>
-		post<{ player: GoldenBootPlayer }>('/api/forecast/topscorers/ensure', player),
 	leagueProgress: (id: string) =>
 		get<LeagueProgress>(`/api/leagues/${id}/progress`),
 	playerStats: () => get<PlayerStats>('/api/player/me/stats'),

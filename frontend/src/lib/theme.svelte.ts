@@ -39,7 +39,7 @@ function apply(mode: ThemeMode) {
 	if (meta)
 		meta.setAttribute(
 			'content',
-			mode === 'worldcup' ? '#071019' : resolved === 'light' ? '#fafaf9' : '#0b0b0d'
+			mode === 'worldcup' ? '#03140b' : resolved === 'light' ? '#f2faf5' : '#04140c'
 		);
 }
 

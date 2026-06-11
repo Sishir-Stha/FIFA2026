@@ -45,7 +45,7 @@
 </script>
 
 <div class="auth">
-	<h1>VM Tipping</h1>
+	<h1>Yeti Airlines</h1>
 	<p class="muted">{t.auth.tagline}</p>
 
 	<div class="card">

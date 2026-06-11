@@ -11,11 +11,9 @@
 	import PwaInstallBanner from '$lib/components/PwaInstallBanner.svelte';
 	import InfoButton from '$lib/components/InfoButton.svelte';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
-	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
 	import { serverClock } from '$lib/serverclock.svelte';
 	import { language } from '$lib/language.svelte';
 	import { tipsStore } from '$lib/tips.svelte';
-	import { forecastStore as fs } from '$lib/forecast.svelte';
 
 	let { children } = $props();
 
@@ -30,7 +28,6 @@
 			return;
 		}
 		if (!tipsStore.loaded) tipsStore.load().catch(() => {});
-		if (!fs.loaded) fs.load().catch(() => {});
 		
 		serverClock.startAutoRefresh();
 		return () => serverClock.stopAutoRefresh();
@@ -38,23 +35,16 @@
 
 	// Signed-out-only pages — visible to anonymous users; signed-in users
 	// bounce away to home (or /join if an invite is attached).
-	const authPages = ['/login', '/register', '/forgot-password'];
+	const authPages = ['/login', '/register'];
 	let path = $derived($page.url.pathname);
 	let isAuthPage = $derived(authPages.includes(path));
-	// Public routes — anyone can land here regardless of auth state:
-	//   /join/<code>                 invite landing
-	//   /confirm-password-reset/<t>  email reset target (must work even for
-	//                                a still-signed-in user whose token was
-	//                                requested by someone with their email)
+	// Public routes — anyone can land here regardless of auth state.
 	let isPublic = $derived(
 		(path === '/' && !auth.isAuthed) ||
-		path.startsWith('/join') ||
-			path.startsWith('/confirm-password-reset/')
+		path.startsWith('/join')
 	);
-	// No app chrome on the standalone auth / invite / reset screens.
+	// No app chrome on the standalone auth and invite screens.
 	let chrome = $derived(auth.isAuthed && !isAuthPage && !isPublic);
-	let showPublicThemeToggle = $derived(path !== '/');
-
 	// SPA auth guard.
 	$effect(() => {
 		const invite = $page.url.searchParams.get('invite');
@@ -85,7 +75,7 @@
 		<div class="rail-search"><AppSearch /></div>
 		<NavLinks variant="rail" />
 		<div class="spacer"></div>
-		<div class="rail-actions"><LanguageToggle compact /><ThemeToggle compact /><InfoButton /></div>
+		<div class="rail-actions"><ThemeToggle compact /><InfoButton /></div>
 		<div class="rail-user"><UserMenu align="left" up showName /></div>
 	</aside>
 
@@ -94,18 +84,11 @@
 {:else}
 	<div class="public-topbar">
 		<div class="public-topbar-shell">
-			<div
-				class="auth-actions"
-				class:single={!showPublicThemeToggle}
-				aria-label={showPublicThemeToggle
-					? language.text('Visningsvalg', 'Visingsval', 'Display options')
-					: language.text('Språkvalg', 'Språkval', 'Language options')}
-			>
-				<LanguageToggle compact />
-				{#if showPublicThemeToggle}
+			{#if path !== '/'}
+				<div class="auth-actions" aria-label="Display options">
 					<ThemeToggle compact />
-				{/if}
-			</div>
+				</div>
+			{/if}
 		</div>
 	</div>
 {/if}
@@ -153,9 +136,6 @@
 		backdrop-filter: blur(18px);
 		-webkit-backdrop-filter: blur(18px);
 		pointer-events: auto;
-	}
-	.auth-actions.single {
-		padding-inline: 0.3rem;
 	}
 	@media (max-width: 520px) {
 		:global(.app-shell.public-shell) {

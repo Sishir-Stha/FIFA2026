@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Yeti Airlines">
+  <circle cx="48" cy="58" r="42" fill="#00a651"/>
+  <g fill="#fff">
+    <ellipse cx="43" cy="61" rx="14" ry="25" transform="rotate(13 43 61)"/>
+    <ellipse cx="64" cy="82" rx="11" ry="18" transform="rotate(-14 64 82)"/>
+    <circle cx="28" cy="34" r="9"/>
+    <circle cx="17" cy="48" r="6"/>
+    <circle cx="14" cy="59" r="4.5"/>
+    <circle cx="15" cy="69" r="4"/>
+  </g>
+  <path
+    d="M53 50c8-7 14-11 21-14v29l12-13c10-11 18-20 26-30-2 12-7 21-16 28l-10 8 25-13c-4 10-11 17-21 22l-11 6-25 30c-4 5-9 8-16 8H24l8-9h8c4 0 7-2 10-5l24-30V55H62v30l-9 11V50z"
+    fill="#d7a83d"
+  />
+</svg>

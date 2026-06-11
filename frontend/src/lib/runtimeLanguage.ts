@@ -1,11 +1,9 @@
 export type RuntimeLanguageCode = 'nb' | 'nn' | 'en';
 
 const STORAGE_KEY = 'language';
-const DEFAULT_LANGUAGE: RuntimeLanguageCode = 'nb';
+const DEFAULT_LANGUAGE: RuntimeLanguageCode = 'en';
 
-function normalizeRuntimeLanguage(value: string | null | undefined): RuntimeLanguageCode {
-	if (value === 'en') return 'en';
-	if (value === 'nn') return 'nn';
+function normalizeRuntimeLanguage(_value: string | null | undefined): RuntimeLanguageCode {
 	return DEFAULT_LANGUAGE;
 }
 

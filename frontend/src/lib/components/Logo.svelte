@@ -11,89 +11,65 @@
 	const t = $derived(strings[language.resolved]);
 </script>
 
-<a class="logo" class:compact class:hero={variant === 'hero'} href="/" aria-label={`VM Tipping — ${t.nav.home.toLowerCase()}`}>
-	<span class="mark-frame"><img class="mark" src="/logos/fhun_logo-icon.svg" alt="" /></span>
-	{#if !compact}
-		<span class="copy">
-			<span class="word">VM&nbsp;Tipping</span>
-			{#if variant === 'hero' && tagline}<span class="tagline">{tagline}</span>{/if}
-		</span>
-	{/if}
+<a class="logo" class:compact class:hero={variant === 'hero'} href="/" aria-label={`Yeti Airlines — ${t.nav.home.toLowerCase()}`}>
+	<span class="brand-plate">
+		<img
+			class="brand-image"
+			src={compact ? '/logos/yeti-airlines-mark.svg' : '/logos/yeti-airlines-logo.svg'}
+			alt=""
+		/>
+	</span>
+	{#if variant === 'hero' && tagline}<span class="tagline">{tagline}</span>{/if}
 </a>
 
 <style>
 	.logo {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.8rem;
-		color: var(--text);
-		font-weight: 800;
-		letter-spacing: 0;
-	}
-	.mark-frame {
 		display: inline-grid;
-		place-items: center;
-		width: 40px;
-		height: 40px;
-		border-radius: 14px;
-		background: color-mix(in srgb, var(--gold) 12%, var(--surface-2));
-		box-shadow: var(--shadow-tile);
-		flex: none;
+		gap: 0.55rem;
+		color: var(--text);
+		width: fit-content;
 	}
-	.mark {
-		height: 34px;
-		width: auto;
-		display: block;
-	}
-	.copy {
+	.brand-plate {
 		display: grid;
-		gap: 0.12rem;
+		place-items: center;
+		width: 190px;
+		padding: 0.3rem 0.55rem;
+		border: 1px solid rgba(0, 166, 81, 0.16);
+		border-radius: 14px;
+		background: #fff;
+		box-shadow: 0 10px 28px -20px rgba(0, 86, 44, 0.55);
 	}
-	.word {
-		font-family: var(--font-display);
-		font-size: 1.35rem;
-		font-weight: 700;
-		letter-spacing: 0;
-		line-height: 1;
+	.brand-image {
+		width: 100%;
+		height: auto;
+		display: block;
 	}
 	.tagline {
 		font-size: 0.82rem;
 		font-weight: 650;
 		color: var(--muted);
 		line-height: 1.25;
+		max-width: 32ch;
 	}
 	.logo.hero {
-		align-items: center;
-		gap: 1rem;
+		gap: 0.75rem;
 	}
-	.logo.hero .mark-frame {
-		width: 68px;
-		height: 68px;
-		border-radius: 20px;
-		background:
-			linear-gradient(145deg, color-mix(in srgb, var(--gold) 24%, var(--surface)), var(--surface-2));
-		border: 1px solid color-mix(in srgb, var(--gold) 30%, var(--border));
-		box-shadow: var(--shadow-pop);
-	}
-	.logo.hero .mark {
-		height: 58px;
-	}
-	.logo.hero .word {
-		font-size: clamp(2rem, 9vw, 3rem);
-		font-weight: 800;
+	.logo.hero .brand-plate {
+		width: min(310px, 82vw);
+		padding: 0.5rem 0.8rem;
+		border-radius: 18px;
+		box-shadow: 0 20px 46px -28px rgba(0, 86, 44, 0.72);
 	}
 	.logo.hero .tagline {
 		font-size: 0.95rem;
 	}
 	.logo.compact {
-		gap: 0;
+		display: inline-flex;
 	}
-	.logo.compact .mark-frame {
-		width: 38px;
-		height: 38px;
+	.logo.compact .brand-plate {
+		width: 42px;
+		height: 42px;
+		padding: 0.1rem;
 		border-radius: 13px;
-	}
-	.logo.compact .mark {
-		height: 32px;
 	}
 </style>

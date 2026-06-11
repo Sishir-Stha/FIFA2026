@@ -6,7 +6,6 @@ export const strings: Record<
 		nav: {
 			home: string;
 			matchTips: string;
-			worldCupTips: string;
 			bracket: string;
 			leagues: string;
 		};
@@ -28,13 +27,9 @@ export const strings: Record<
 			passwordLabel: string;
 			emailPlaceholder: string;
 			login: string;
-			forgotPassword: string;
-			or: string;
 			newHere: string;
 			createAccount: string;
-			google: string;
 			wrongCredentials: string;
-			googleFailed: string;
 		};
 		register: {
 			title: string;
@@ -46,28 +41,6 @@ export const strings: Record<
 			loginLink: string;
 			error: string;
 			passwordTooShort: string;
-		};
-		forgotPassword: {
-			title: string;
-			subtitle: string;
-			emailLabel: string;
-			send: string;
-			success: string;
-			back: string;
-			error: string;
-		};
-		resetPassword: {
-			title: string;
-			subtitle: string;
-			newPasswordLabel: string;
-			confirmLabel: string;
-			update: string;
-			success: string;
-			back: string;
-			errorInvalid: string;
-			errorMismatch: string;
-			passwordTooShort: string;
-			updateError: string;
 		};
 		search: {
 			trigger: string;
@@ -102,8 +75,6 @@ export const strings: Record<
 			leaguesBody: string;
 			matchTipsTitle: string;
 			matchTipsBody: string;
-			worldCupTipsTitle: string;
-			worldCupTipsBody: string;
 			primaryCta: string;
 			secondaryCta: string;
 			footnote: string;
@@ -168,7 +139,6 @@ export const strings: Record<
 		nav: {
 			home: 'Hjem',
 			matchTips: 'Kamptips',
-			worldCupTips: 'VM-tips',
 			bracket: 'Turnering',
 			leagues: 'Ligaer'
 		},
@@ -184,23 +154,19 @@ export const strings: Record<
 			languageAria: 'Bytt til nynorsk'
 		},
 		auth: {
-			tagline: 'Kamptips og VM-tips i samme liga.',
+			tagline: 'FIFA 2026 - tipp og vinn spennende premier.',
 			subtitle: 'Samle vennene dine, tipp kampene og følg VM-dramaet fra første avspark.',
 			emailLabel: 'E-post',
 			passwordLabel: 'Passord',
 			emailPlaceholder: 'navn@eksempel.no',
 			login: 'Logg inn',
-			forgotPassword: 'Glemt passord?',
-			or: 'ELLER',
 			newHere: 'Ny her?',
 			createAccount: 'Opprett konto.',
-			google: 'Fortsett med Google',
-			wrongCredentials: 'Feil e-post eller passord.',
-			googleFailed: 'Google-innlogging feilet.'
+			wrongCredentials: 'Feil e-post eller passord.'
 		},
 		register: {
 			title: 'Opprett konto',
-			subtitle: 'Bli med i tippekonkurransen for VM.',
+			subtitle: 'Bli med i FIFA 2026-konkurransen for kamptips.',
 			nameLabel: 'Visningsnavn',
 			passwordHint: 'Passordet må være minst 8 tegn.',
 			create: 'Opprett konto',
@@ -209,31 +175,9 @@ export const strings: Record<
 			error: 'Kunne ikke opprette konto.',
 			passwordTooShort: 'Passordet må være minst 8 tegn.'
 		},
-		forgotPassword: {
-			title: 'Tilbakestill passord',
-			subtitle: 'Skriv e-posten du registrerte deg med, så sender vi deg en lenke.',
-			emailLabel: 'E-post',
-			send: 'Send lenke',
-			success: 'Hvis e-posten er registrert, er en lenke på vei.',
-			back: 'Tilbake til innlogging',
-			error: 'Kunne ikke sende lenken.'
-		},
-		resetPassword: {
-			title: 'Velg nytt passord',
-			subtitle: 'Skriv inn og bekreft det nye passordet ditt.',
-			newPasswordLabel: 'Nytt passord',
-			confirmLabel: 'Bekreft passord',
-			update: 'Oppdater passord',
-			success: 'Passordet er oppdatert - sender deg til innlogging...',
-			back: 'Tilbake til innlogging',
-			errorInvalid: 'Lenken er ugyldig eller utløpt.',
-			errorMismatch: 'Passordene er ikke like.',
-			passwordTooShort: 'Passordet må være minst 8 tegn.',
-			updateError: 'Kunne ikke oppdatere passordet.'
-		},
 		search: {
 			trigger: 'Søk',
-			panelAria: 'Søk i VM Tipping',
+			panelAria: 'Søk i Yeti Airlines',
 			placeholder: 'Søk kamp, lag, gruppe eller liga',
 			close: 'Lukk søk',
 			loading: 'Laster søk...',
@@ -246,11 +190,11 @@ export const strings: Record<
 			noLeagues: 'Ingen ligaer'
 		},
 		pwa: {
-			installTitle: 'Installer VM Tipping',
+			installTitle: 'Installer Yeti Airlines',
 			installBody: 'Appikon på hjemskjermen, fullskjerm og raskere start.',
 			installButton: 'Installer',
 			close: 'Lukk',
-			iosTitle: 'Legg VM Tipping på hjemskjermen',
+			iosTitle: 'Legg Yeti Airlines på hjemskjermen',
 			iosStep1: 'Trykk på Del-knappen i Safari-verktøylinjen.',
 			iosStep2: 'Bla ned og velg Legg til på hjemskjerm.',
 			iosStep3: 'Trykk Legg til øverst til høyre.',
@@ -258,14 +202,12 @@ export const strings: Record<
 		},
 		introCard: {
 			kicker: 'Ny i appen?',
-			title: 'Velkommen til VM Tipping',
+			title: 'Velkommen til Yeti Airlines',
 			body: 'Tipp kampene, bli med i ligaer og følg poengene dine gjennom VM.',
 			leaguesTitle: 'Ligaer',
 			leaguesBody: 'Opprett en liga eller bruk kode.',
 			matchTipsTitle: 'Kamptips',
 			matchTipsBody: 'Lever tips før avspark.',
-			worldCupTipsTitle: 'VM-tips',
-			worldCupTipsBody: 'Tipp sluttspill og vinner.',
 			primaryCta: 'Åpne ligaer',
 			secondaryCta: 'Se kamptips',
 			footnote: '',
@@ -329,7 +271,6 @@ export const strings: Record<
 		nav: {
 			home: 'Heim',
 			matchTips: 'Kamptips',
-			worldCupTips: 'VM-tips',
 			bracket: 'Turnering',
 			leagues: 'Ligaer'
 		},
@@ -345,23 +286,19 @@ export const strings: Record<
 			languageAria: 'Bytt til engelsk'
 		},
 		auth: {
-			tagline: 'Kamptips og VM-tips i same liga.',
+			tagline: 'FIFA 2026 - tipp og vinn spennande premiar.',
 			subtitle: 'Samle venene dine, tipp kampane og følg VM-dramaet frå første avspark.',
 			emailLabel: 'E-post',
 			passwordLabel: 'Passord',
 			emailPlaceholder: 'di.e-post@eksempel.no',
 			login: 'Logg inn',
-			forgotPassword: 'Gleymt passord?',
-			or: 'ELLER',
 			newHere: 'Ny her?',
 			createAccount: 'Opprett konto.',
-			google: 'Fortsett med Google',
-			wrongCredentials: 'Feil e-post eller passord.',
-			googleFailed: 'Google-pålogging feila.'
+			wrongCredentials: 'Feil e-post eller passord.'
 		},
 		register: {
 			title: 'Opprett konto',
-			subtitle: 'Bli med i tippekonkurransen for VM.',
+			subtitle: 'Bli med i FIFA 2026-konkurransen for kamptips.',
 			nameLabel: 'Visingsnamn',
 			passwordHint: 'Passordet må vere minst 8 teikn.',
 			create: 'Opprett konto',
@@ -370,31 +307,9 @@ export const strings: Record<
 			error: 'Kunne ikkje opprette konto.',
 			passwordTooShort: 'Passordet må vere minst 8 teikn.'
 		},
-		forgotPassword: {
-			title: 'Tilbakestill passord',
-			subtitle: 'Skriv e-posten du registrerte deg med — vi sender deg ei tilbakestillingslenke.',
-			emailLabel: 'E-post',
-			send: 'Send tilbakestillingslenke',
-			success: 'Viss e-posten er registrert, er ei lenke på veg.',
-			back: 'Tilbake til pålogging',
-			error: 'Kunne ikkje sende tilbakestillingslenke.'
-		},
-		resetPassword: {
-			title: 'Vel nytt passord',
-			subtitle: 'Skriv inn og stadfest det nye passordet ditt.',
-			newPasswordLabel: 'Nytt passord',
-			confirmLabel: 'Stadfest nytt passord',
-			update: 'Oppdater passord',
-			success: 'Passordet er oppdatert — sender deg til pålogging…',
-			back: 'Tilbake til pålogging',
-			errorInvalid: 'Lenka er ugyldig eller utløpt.',
-			errorMismatch: 'Passorda er ikkje like.',
-			passwordTooShort: 'Passordet må vere minst 8 teikn.',
-			updateError: 'Kunne ikkje oppdatere passord.'
-		},
 		search: {
 			trigger: 'Søk',
-			panelAria: 'Søk i VM Tipping',
+			panelAria: 'Søk i Yeti Airlines',
 			placeholder: 'Søk kamp, lag, gruppe eller liga',
 			close: 'Lukk søk',
 			loading: 'Lastar søk…',
@@ -407,11 +322,11 @@ export const strings: Record<
 			noLeagues: 'Ingen ligaer'
 		},
 		pwa: {
-			installTitle: 'Installer VM Tipping',
+			installTitle: 'Installer Yeti Airlines',
 			installBody: 'Appikon på heimskjermen, fullskjerm og raskare start.',
 			installButton: 'Installer',
 			close: 'Lukk',
-			iosTitle: 'Legg VM Tipping til på heimskjermen',
+			iosTitle: 'Legg Yeti Airlines til på heimskjermen',
 			iosStep1: 'Trykk på Del-knappen i Safari-verktøylinja.',
 			iosStep2: 'Bla ned og vel Legg til på heimskjerm.',
 			iosStep3: 'Trykk Legg til øvst til høgre.',
@@ -419,14 +334,12 @@ export const strings: Record<
 		},
 		introCard: {
 			kicker: 'Ny i appen?',
-			title: 'Velkomen til VM Tipping',
+			title: 'Velkomen til Yeti Airlines',
 			body: 'Tipp kampane, bli med i ligaer og følg poenga dine gjennom VM.',
 			leaguesTitle: 'Ligaer',
 			leaguesBody: 'Opprett eller bli med med kode.',
 			matchTipsTitle: 'Kamptips',
 			matchTipsBody: 'Lever tips før avspark.',
-			worldCupTipsTitle: 'VM-tips',
-			worldCupTipsBody: 'Tipp sluttspel og vinnar.',
 			primaryCta: 'Opne ligaer',
 			secondaryCta: 'Sjå kamptips',
 			footnote: '',
@@ -490,8 +403,7 @@ export const strings: Record<
 		nav: {
 			home: 'Home',
 			matchTips: 'Match Tips',
-			worldCupTips: 'World Cup Tips',
-			bracket: 'Bracket',
+			bracket: 'Tournament',
 			leagues: 'Leagues'
 		},
 		chrome: {
@@ -506,23 +418,19 @@ export const strings: Record<
 			languageAria: 'Switch to Norwegian Bokmål'
 		},
 		auth: {
-			tagline: 'Match tips and World Cup tips in one league.',
-			subtitle: 'Build your crew, pick the games, and follow the World Cup drama from kickoff.',
+			tagline: 'FIFA 2026 Predict and Win Exciting Prizes.',
+			subtitle: '',
 			emailLabel: 'Email',
 			passwordLabel: 'Password',
 			emailPlaceholder: 'name@example.com',
 			login: 'Log in',
-			forgotPassword: 'Forgot password?',
-			or: 'OR',
 			newHere: 'New here?',
 			createAccount: 'Create account.',
-			google: 'Continue with Google',
-			wrongCredentials: 'Wrong email or password.',
-			googleFailed: 'Google sign-in failed.'
+			wrongCredentials: 'Wrong email or password.'
 		},
 		register: {
 			title: 'Create account',
-			subtitle: 'Join the World Cup tipping competition.',
+			subtitle: 'Join the FIFA 2026 match prediction competition.',
 			nameLabel: 'Display name',
 			passwordHint: 'Password must be at least 8 characters.',
 			create: 'Create account',
@@ -531,31 +439,9 @@ export const strings: Record<
 			error: 'Could not create account.',
 			passwordTooShort: 'Password must be at least 8 characters.'
 		},
-		forgotPassword: {
-			title: 'Reset password',
-			subtitle: 'Enter the email you signed up with and we will send a reset link.',
-			emailLabel: 'Email',
-			send: 'Send reset link',
-			success: 'If the email is registered, a link is on the way.',
-			back: 'Back to sign in',
-			error: 'Could not send reset link.'
-		},
-		resetPassword: {
-			title: 'Choose a new password',
-			subtitle: 'Enter and confirm your new password.',
-			newPasswordLabel: 'New password',
-			confirmLabel: 'Confirm new password',
-			update: 'Update password',
-			success: 'Password updated — sending you to sign in…',
-			back: 'Back to sign in',
-			errorInvalid: 'The link is invalid or expired.',
-			errorMismatch: 'The passwords do not match.',
-			passwordTooShort: 'Password must be at least 8 characters.',
-			updateError: 'Could not update password.'
-		},
 		search: {
 			trigger: 'Search',
-			panelAria: 'Search in VM Tipping',
+			panelAria: 'Search in Yeti Airlines',
 			placeholder: 'Search match, team, group or league',
 			close: 'Close search',
 			loading: 'Loading search…',
@@ -568,11 +454,11 @@ export const strings: Record<
 			noLeagues: 'No leagues'
 		},
 		pwa: {
-			installTitle: 'Install VM Tipping',
+			installTitle: 'Install Yeti Airlines',
 			installBody: 'Home screen icon, full screen, and faster start.',
 			installButton: 'Install',
 			close: 'Close',
-			iosTitle: 'Add VM Tipping to the home screen',
+			iosTitle: 'Add Yeti Airlines to the home screen',
 			iosStep1: 'Tap the Share button in the Safari toolbar.',
 			iosStep2: 'Scroll down and choose Add to Home Screen.',
 			iosStep3: 'Tap Add in the top right corner.',
@@ -580,14 +466,12 @@ export const strings: Record<
 		},
 		introCard: {
 			kicker: 'New here?',
-			title: 'Welcome to VM Tipping',
+			title: 'Welcome to Yeti Airlines',
 			body: 'Pick matches, join leagues, and follow your points through the World Cup.',
 			leaguesTitle: 'Leagues',
 			leaguesBody: 'Create one or join with a code.',
 			matchTipsTitle: 'Match tips',
 			matchTipsBody: 'Submit before kickoff.',
-			worldCupTipsTitle: 'World Cup tips',
-			worldCupTipsBody: 'Pick the bracket and winner.',
 			primaryCta: 'Open leagues',
 			secondaryCta: 'See match tips',
 			footnote: '',

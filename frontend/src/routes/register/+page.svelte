@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { language } from '$lib/language.svelte';
 	import { strings } from '$lib/strings';
+	import Logo from '$lib/components/Logo.svelte';
 
 	// After registering, resume an invite if one was carried in the URL.
 	let invite = $derived($page.url.searchParams.get('invite'));
@@ -41,8 +42,11 @@
 </script>
 
 <div class="auth">
-	<h1>{t.register.title}</h1>
-	<p class="muted">{t.register.subtitle}</p>
+	<div class="brand-intro">
+		<Logo variant="hero" tagline={t.auth.tagline} />
+		<h1>{t.register.title}</h1>
+		<p class="muted">{t.register.subtitle}</p>
+	</div>
 
 	<form class="card" onsubmit={submit}>
 		<div class="field">
@@ -81,15 +85,26 @@
 
 <style>
 	.auth {
-		max-width: 380px;
-		margin: 10dvh auto 0;
+		max-width: 420px;
+		margin: 6dvh auto 0;
+		padding: 0 0.2rem;
+	}
+	.brand-intro {
+		display: grid;
+		gap: 0.65rem;
+		margin-bottom: 1.2rem;
+		text-align: center;
+	}
+	.brand-intro :global(.logo.hero) {
+		justify-self: center;
+		text-align: center;
 	}
 	h1 {
 		margin: 0;
 		font-size: 1.8rem;
 	}
 	.muted {
-		margin: 0.25rem 0 1.5rem;
+		margin: 0;
 	}
 	.switch {
 		text-align: center;

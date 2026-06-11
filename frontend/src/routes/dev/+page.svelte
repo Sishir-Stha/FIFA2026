@@ -180,9 +180,9 @@
 			<h3>{language.text('Hopp til', 'Hopp til', 'Jump to')}</h3>
 		<p class="muted small">
 				{language.text(
-					'Kamper før dette tidspunktet blir simulert (ferdige, eller live hvis de er midt i kampen); senere kamper blir nullstilt. Låsing, venners kamptips og VM-tipsfristen følger denne klokken.',
-					'Kampar før dette tidspunktet blir simulerte (ferdige, eller live viss dei er midt i kampen); seinare kampar blir nullstilte. Låsing, venetips og VM-tipsfristen følgjer denne klokka.',
-					'Matches before this time are simulated (finished, or live if in the middle of the match); later matches are reset. Locks, friends\' match tips, and the World Cup tip deadline follow this clock.'
+					'Kamper før dette tidspunktet blir simulert; senere kamper blir nullstilt. Låsing av kamptips følger denne klokken.',
+					'Kampar før dette tidspunktet blir simulerte; seinare kampar blir nullstilte. Låsing av kamptips følgjer denne klokka.',
+					'Matches before this time are simulated and later matches are reset. Match-tip locking follows this clock.'
 				)}
 		</p>
 		<div class="field">
@@ -209,9 +209,9 @@
 		<h3>{language.text('Lag bot-spillere', 'Lag bot-spelarar', 'Generate bot players')}</h3>
 		<p class="muted small">
 			{language.text(
-				'Hver bot får et helt tilfeldig VM-tips og kamptips for hver kamp, og blir med i valgt liga (eller alle private ligaer) - et live tabelløp.',
-				'Kvar bot får eit heilt tilfeldig VM-tips og kamptips for kvar kamp, og blir med i vald liga (eller alle private ligaene dine) - eit live tabelløp.',
-				'Each bot gets a fully random World Cup tip and a match tip for every match, and joins the selected league (or all your private leagues) - a live leaderboard race.'
+				'Hver bot får et tilfeldig kamptips for hver kamp for å fylle testtabellen.',
+				'Kvar bot får eit tilfeldig kamptips for kvar kamp for å fylle testtabellen.',
+				'Each bot receives a random match tip for every match to populate the test leaderboard.'
 			)}
 		</p>
 		<div class="field">

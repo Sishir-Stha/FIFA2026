@@ -18,15 +18,11 @@
 	let busy = $state(false);
 	let fileInput: HTMLInputElement;
 
-	let resetBusy = $state(false);
-	let resetSent = $state(false);
-	let resetError = $state('');
 	let deletePhrase = $state('');
 	let deleteBusy = $state(false);
 	let deleteError = $state('');
 	let introReset = $state(false);
 	const t = $derived(strings[language.resolved]);
-	const isEnglish = $derived(language.isEnglish);
 	const introCopy = $derived(strings[language.resolved].introCard);
 
 	// Player Card stats (own profile only).
@@ -47,23 +43,6 @@
 			: 0
 	);
 	const hasScored = $derived(!!stats && stats.tipsScored > 0);
-
-	async function sendReset() {
-		if (!auth.user?.email) return;
-		resetError = '';
-		resetSent = false;
-		resetBusy = true;
-		try {
-			await auth.requestPasswordReset(auth.user.email);
-			resetSent = true;
-		} catch (err: unknown) {
-			resetError =
-				(err as { message?: string })?.message ??
-				language.text('Kunne ikke sende lenken.', 'Kunne ikkje sende tilbakestillingslenke.', 'Could not send reset link.');
-		} finally {
-			resetBusy = false;
-		}
-	}
 
 	// Revoke the object URL when it's replaced or the page unmounts.
 	$effect(() => {
@@ -174,7 +153,7 @@
 			</div>
 
 			<div class="pc-crest" aria-hidden="true">
-				<span>VM</span>
+				<span>WC</span>
 				<small>26</small>
 			</div>
 		</div>
@@ -296,43 +275,13 @@
 		</div>
 	</section>
 
-	<section class="card">
-		<h3>{language.text('Passord', 'Passord', 'Password')}</h3>
-		<p class="muted small">
-			{#if isEnglish}
-				We will send a reset link to <strong>{auth.user?.email ?? ''}</strong>.
-				Use it to choose a new password.
-			{:else if language.isNynorsk}
-				Vi sender ei tilbakestillingslenke til <strong>{auth.user?.email ?? ''}</strong>.
-				Bruk henne til å velje nytt passord.
-			{:else}
-				Vi sender en tilbakestillingslenke til <strong>{auth.user?.email ?? ''}</strong>.
-				Bruk den til å velge nytt passord.
-			{/if}
-		</p>
-		{#if resetError}<p class="error">{resetError}</p>{/if}
-		{#if resetSent}
-			<p class="ok">{language.text('Lenke sendt - sjekk innboksen.', 'Tilbakestillingslenke sendt - sjekk innboksen.', 'Reset link sent - check your inbox.')}</p>
-		{/if}
-		<button
-			type="button"
-			class="btn secondary"
-			onclick={sendReset}
-			disabled={resetBusy || resetSent}
-		>
-			{resetBusy
-				? language.text('Sender...', 'Sender…', 'Sending…')
-				: resetSent ? language.text('Sendt', 'Sendt', 'Sent') : language.text('Send lenke', 'Send tilbakestillingslenke', 'Send reset link')}
-		</button>
-	</section>
-
 	<section class="card danger-zone">
 		<h3>{language.text('Slett konto', 'Slett konto', 'Delete account')}</h3>
 		<p class="muted small danger-copy">
 			{language.text(
-				'Dette sletter kontoen din permanent. Kamptips, VM-tips, medlemskap, chataktivitet og private ligaer du eier, blir også fjernet.',
-				'Dette slettar kontoen din permanent. Kamptips, VM-tips, medlemskap, chataktivitet og private ligaer du eig, blir også fjerna.',
-				'This permanently deletes your account. Tips, World Cup tips, memberships, chat activity and private leagues you own will also be removed.'
+				'Dette sletter kontoen din og kamptipsene dine permanent.',
+				'Dette slettar kontoen din og kamptipsa dine permanent.',
+				'This permanently deletes your account and match tips.'
 			)}
 		</p>
 		<div class="field">

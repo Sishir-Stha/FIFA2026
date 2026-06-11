@@ -7,9 +7,9 @@ import (
 )
 
 func TestInjectInviteMetadata(t *testing.T) {
-	index := `<!doctype html><html><head><title>VM Tipping</title></head><body><div id="app"></div></body></html>`
+	index := `<!doctype html><html><head><title>Yeti Airlines</title></head><body><div id="app"></div></body></html>`
 	page := injectInviteMetadata(index, inviteMeta{
-		PageTitle:   "Bli med i Testliga · VM Tipping",
+		PageTitle:   "Join Test League · Yeti Airlines",
 		Title:       inviteOGTitle,
 		Description: inviteOGDescription,
 		URL:         "https://vm.midttunet.no/join/ABC123",
@@ -17,9 +17,9 @@ func TestInjectInviteMetadata(t *testing.T) {
 	})
 
 	checks := []string{
-		`<title>Bli med i Testliga · VM Tipping</title>`,
-		`property="og:title" content="Bli med i min tippekonkurranse for VM på Midttunet!"`,
-		`property="og:description" content="Klikk her for å utfordre meg."`,
+		`<title>Join Test League · Yeti Airlines</title>`,
+		`property="og:title" content="Join my World Cup prediction league on Yeti Airlines!"`,
+		`property="og:description" content="Open the invitation to compete with me."`,
 		`property="og:image" content="https://vm.midttunet.no/screenshots/Frontpage.png"`,
 		`name="twitter:card" content="summary_large_image"`,
 	}
