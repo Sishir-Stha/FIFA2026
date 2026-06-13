@@ -7,8 +7,6 @@ import (
 
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/core"
-
-	"github.com/oyvhov/world-cup-pool/internal/topscorer"
 )
 
 func avatarURL(user *core.Record) *string {
@@ -118,20 +116,16 @@ func Leaderboard(app core.App, leagueID string) (map[string]any, error) {
 			map[string]any{"u": uid, "c": cfgID}); err == nil {
 			row.ForecastPoints = fs.GetInt("points")
 			var bd struct {
-				GroupsCorrect     int            `json:"groupsCorrect"`
-				AdvanceCorrect    int            `json:"advanceCorrect"`
-				RoundCorrect      map[string]int `json:"roundCorrect"`
-				ChampionCorrect   int            `json:"championCorrect"`
-				GoldenBoot        int            `json:"goldenBoot"`
-				GoldenBootCorrect int            `json:"goldenBootCorrect"`
+				GroupsCorrect   int            `json:"groupsCorrect"`
+				AdvanceCorrect  int            `json:"advanceCorrect"`
+				RoundCorrect    map[string]int `json:"roundCorrect"`
+				ChampionCorrect int            `json:"championCorrect"`
 			}
 			if json.Unmarshal([]byte(fs.GetString("breakdown")), &bd) == nil {
 				f := map[string]int{
-					"groups":           bd.GroupsCorrect,
-					"advance":          bd.AdvanceCorrect,
-					"champion":         bd.ChampionCorrect,
-					"goldenBoot":       bd.GoldenBootCorrect,
-					"goldenBootPoints": bd.GoldenBoot,
+					"groups":   bd.GroupsCorrect,
+					"advance":  bd.AdvanceCorrect,
+					"champion": bd.ChampionCorrect,
 				}
 				for k, v := range bd.RoundCorrect {
 					f[k] = v
@@ -205,9 +199,6 @@ func Leaderboard(app core.App, leagueID string) (map[string]any, error) {
 	out := map[string]any{
 		"league": map[string]any{"id": league.Id, "name": league.GetString("name")},
 		"rows":   rows,
-	}
-	if goldenBoot, err := topscorer.LeagueTableFor(app, leagueID); err == nil {
-		out["goldenBoot"] = goldenBoot
 	}
 	return out, nil
 }

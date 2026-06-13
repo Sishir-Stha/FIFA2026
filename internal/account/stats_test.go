@@ -4,7 +4,7 @@ import "testing"
 
 func TestComputePlayerStatsEmpty(t *testing.T) {
 	s := computePlayerStats(nil)
-	if s.TipsScored != 0 || s.LongestStreak != 0 || s.CurrentStreak != 0 || s.HitRate.Total != 0 || s.HitRate.Pct != 0 {
+	if s.TipsScored != 0 || s.Points != 0 || s.LongestStreak != 0 || s.CurrentStreak != 0 || s.HitRate.Total != 0 || s.HitRate.Pct != 0 {
 		t.Fatalf("empty input must yield zeros, got %+v", s)
 	}
 }
@@ -22,6 +22,9 @@ func TestComputePlayerStatsStreakAndHitRate(t *testing.T) {
 	s := computePlayerStats(in)
 	if s.TipsScored != 6 {
 		t.Fatalf("TipsScored = %d, want 6", s.TipsScored)
+	}
+	if s.Points != 18 {
+		t.Fatalf("Points = %d, want 18", s.Points)
 	}
 	if s.HitRate.Count != 2 || s.HitRate.Total != 6 {
 		t.Fatalf("HitRate = %+v, want 2/6", s.HitRate)
@@ -43,6 +46,9 @@ func TestComputePlayerStatsAllZeros(t *testing.T) {
 		{matchID: "b", kickoff: "2026-06-12T15:00:00Z", points: 0, gdDev: 5},
 	}
 	s := computePlayerStats(in)
+	if s.Points != 0 {
+		t.Fatalf("Points = %d, want 0", s.Points)
+	}
 	if s.LongestStreak != 0 || s.CurrentStreak != 0 {
 		t.Fatalf("expected zero streaks, got long=%d current=%d", s.LongestStreak, s.CurrentStreak)
 	}

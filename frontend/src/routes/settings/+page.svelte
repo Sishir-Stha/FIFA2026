@@ -189,8 +189,8 @@
 					<div class="pc-stat-sub">{t.playerCard.longestStreakSub}</div>
 				</div>
 				<div class="pc-stat">
-					<div class="pc-stat-value">{stats.tipsScored}</div>
-					<div class="pc-stat-label">{language.text('Poengtips', 'Scora tips', 'Scored tips')}</div>
+					<div class="pc-stat-value">{stats.points}</div>
+					<div class="pc-stat-label">{language.text('Poeng', 'Poeng', 'Points')}</div>
 				</div>
 			</div>
 

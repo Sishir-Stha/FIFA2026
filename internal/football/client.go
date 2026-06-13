@@ -1,6 +1,5 @@
-// Package football is a thin client for the API-Football (api-sports.io) free
-// tier. One /fixtures call returns all 104 WC2026 matches, so a periodic sync
-// costs a single request and stays well within the 100/day free limit.
+// Package football is a thin API-Football (api-sports.io) client for World Cup
+// fixtures and results. Season availability depends on the API account plan.
 package football
 
 import (
@@ -8,13 +7,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
-	"sort"
 	"strings"
 	"time"
-	"unicode"
-
-	"golang.org/x/text/unicode/norm"
 )
 
 const (
@@ -49,30 +43,6 @@ type Fixture struct {
 	ETAway    *int
 	PenHome   *int // shootout
 	PenAway   *int
-}
-
-// TopScorer is the subset of the API-Football top-scorers payload used by the
-// Golden Boot prediction.
-type TopScorer struct {
-	ProviderID int
-	Name       string
-	PhotoURL   string
-	TeamName   string
-	Goals      int
-	Assists    int
-	Rank       int
-}
-
-// PlayerSearchResult is a searchable Golden Boot candidate sourced from the
-// API-Football player search endpoint. TeamName is the best country/team label
-// the API exposes for mapping back to our World Cup teams.
-type PlayerSearchResult struct {
-	ProviderID int
-	Name       string
-	PhotoURL   string
-	TeamName   string
-	Goals      int
-	Assists    int
 }
 
 // Finished reports whether the provider considers the match complete.
@@ -127,49 +97,6 @@ type apiResponse struct {
 	} `json:"response"`
 }
 
-type topScorersResponse struct {
-	Errors   json.RawMessage `json:"errors"`
-	Results  int             `json:"results"`
-	Response []struct {
-		Player struct {
-			ID    int    `json:"id"`
-			Name  string `json:"name"`
-			Photo string `json:"photo"`
-		} `json:"player"`
-		Statistics []struct {
-			Team struct {
-				Name string `json:"name"`
-			} `json:"team"`
-			Goals struct {
-				Total   *int `json:"total"`
-				Assists *int `json:"assists"`
-			} `json:"goals"`
-		} `json:"statistics"`
-	} `json:"response"`
-}
-
-type playerSearchResponse struct {
-	Errors   json.RawMessage `json:"errors"`
-	Results  int             `json:"results"`
-	Response []struct {
-		Player struct {
-			ID          int    `json:"id"`
-			Name        string `json:"name"`
-			Photo       string `json:"photo"`
-			Nationality string `json:"nationality"`
-		} `json:"player"`
-		Statistics []struct {
-			Team struct {
-				Name string `json:"name"`
-			} `json:"team"`
-			Goals struct {
-				Total   *int `json:"total"`
-				Assists *int `json:"assists"`
-			} `json:"goals"`
-		} `json:"statistics"`
-	} `json:"response"`
-}
-
 type scorePair struct {
 	Home *int `json:"home"`
 	Away *int `json:"away"`
@@ -178,99 +105,6 @@ type scorePair struct {
 // Fixtures returns every WC2026 fixture in a single request.
 func (c *Client) Fixtures(ctx context.Context) ([]Fixture, error) {
 	return c.FixturesForSeason(ctx, season)
-}
-
-// TopScorers returns API-Football's ordered Golden Boot table for WC2026.
-func (c *Client) TopScorers(ctx context.Context) ([]TopScorer, error) {
-	url := fmt.Sprintf("%s/players/topscorers?league=%d&season=%d", baseURL, leagueID, season)
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("x-apisports-key", c.key)
-
-	resp, err := c.http.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("api-football top scorers: status %d", resp.StatusCode)
-	}
-
-	var ar topScorersResponse
-	if err := json.NewDecoder(resp.Body).Decode(&ar); err != nil {
-		return nil, err
-	}
-	if s := strings.TrimSpace(string(ar.Errors)); s != "" && s != "[]" && s != "{}" {
-		return nil, fmt.Errorf("api-football top scorers errors: %s", s)
-	}
-	if ar.Results > 0 && len(ar.Response) == 0 {
-		return nil, fmt.Errorf("api-football top scorers: server reports %d results but response array is empty — possible schema change", ar.Results)
-	}
-
-	out := make([]TopScorer, 0, len(ar.Response))
-	for i, r := range ar.Response {
-		if r.Player.ID == 0 || strings.TrimSpace(r.Player.Name) == "" || len(r.Statistics) == 0 {
-			continue
-		}
-		stat := r.Statistics[0]
-		goals, assists := 0, 0
-		if stat.Goals.Total != nil {
-			goals = *stat.Goals.Total
-		}
-		if stat.Goals.Assists != nil {
-			assists = *stat.Goals.Assists
-		}
-		out = append(out, TopScorer{
-			ProviderID: r.Player.ID,
-			Name:       r.Player.Name,
-			PhotoURL:   r.Player.Photo,
-			TeamName:   stat.Team.Name,
-			Goals:      goals,
-			Assists:    assists,
-			Rank:       i + 1,
-		})
-	}
-	return out, nil
-}
-
-// SearchPlayers looks up a player by name. It prefers the World Cup-scoped
-// search first so goals/assists stay tournament-specific, then falls back to a
-// generic player search so users can still nominate breakout candidates before
-// they appear in the live top-scorer table.
-func (c *Client) SearchPlayers(ctx context.Context, query string) ([]PlayerSearchResult, error) {
-	query = strings.TrimSpace(query)
-	if query == "" {
-		return nil, nil
-	}
-
-	worldCup, worldCupErr := c.searchPlayers(ctx, "/players", url.Values{
-		"search": []string{query},
-		"league": []string{fmt.Sprintf("%d", leagueID)},
-		"season": []string{fmt.Sprintf("%d", season)},
-	})
-	if worldCupErr == nil && len(worldCup) > 0 {
-		sortPlayerSearchResults(worldCup, query)
-		return worldCup, nil
-	}
-
-	fallback, err := c.searchPlayers(ctx, "/players/profiles", url.Values{"search": []string{query}})
-	if err != nil {
-		if worldCupErr != nil {
-			return nil, worldCupErr
-		}
-		return nil, err
-	}
-	sortPlayerSearchResults(fallback, query)
-	for index := range fallback {
-		fallback[index].Goals = 0
-		fallback[index].Assists = 0
-	}
-	if len(fallback) > 24 {
-		fallback = fallback[:24]
-	}
-	return fallback, nil
 }
 
 // FixturesForSeason fetches the World Cup fixtures for any season (used by the
@@ -325,131 +159,6 @@ func (c *Client) FixturesForSeason(ctx context.Context, yr int) ([]Fixture, erro
 		})
 	}
 	return out, nil
-}
-
-func (c *Client) searchPlayers(ctx context.Context, path string, params url.Values) ([]PlayerSearchResult, error) {
-	endpoint := baseURL + path
-	if encoded := params.Encode(); encoded != "" {
-		endpoint += "?" + encoded
-	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("x-apisports-key", c.key)
-
-	resp, err := c.http.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("api-football player search: status %d", resp.StatusCode)
-	}
-
-	var ar playerSearchResponse
-	if err := json.NewDecoder(resp.Body).Decode(&ar); err != nil {
-		return nil, err
-	}
-	if s := strings.TrimSpace(string(ar.Errors)); s != "" && s != "[]" && s != "{}" {
-		return nil, fmt.Errorf("api-football player search errors: %s", s)
-	}
-
-	out := make([]PlayerSearchResult, 0, len(ar.Response))
-	seen := map[int]bool{}
-	for _, r := range ar.Response {
-		if r.Player.ID == 0 || strings.TrimSpace(r.Player.Name) == "" || seen[r.Player.ID] {
-			continue
-		}
-		seen[r.Player.ID] = true
-
-		teamName := strings.TrimSpace(r.Player.Nationality)
-		goals, assists := 0, 0
-		if len(r.Statistics) > 0 {
-			if teamName == "" {
-				teamName = strings.TrimSpace(r.Statistics[0].Team.Name)
-			}
-			if r.Statistics[0].Goals.Total != nil {
-				goals = *r.Statistics[0].Goals.Total
-			}
-			if r.Statistics[0].Goals.Assists != nil {
-				assists = *r.Statistics[0].Goals.Assists
-			}
-		}
-
-		out = append(out, PlayerSearchResult{
-			ProviderID: r.Player.ID,
-			Name:       r.Player.Name,
-			PhotoURL:   r.Player.Photo,
-			TeamName:   teamName,
-			Goals:      goals,
-			Assists:    assists,
-		})
-	}
-	return out, nil
-}
-
-func sortPlayerSearchResults(players []PlayerSearchResult, query string) {
-	foldedQuery := foldSearchText(query)
-	sort.SliceStable(players, func(first, second int) bool {
-		firstScore := playerSearchScore(foldedQuery, players[first].Name)
-		secondScore := playerSearchScore(foldedQuery, players[second].Name)
-		if firstScore != secondScore {
-			return firstScore > secondScore
-		}
-		if len(players[first].Name) != len(players[second].Name) {
-			return len(players[first].Name) < len(players[second].Name)
-		}
-		return players[first].Name < players[second].Name
-	})
-}
-
-func playerSearchScore(foldedQuery, name string) int {
-	if foldedQuery == "" {
-		return 0
-	}
-	foldedName := foldSearchText(name)
-	if foldedName == foldedQuery {
-		return 500
-	}
-	for _, token := range strings.Fields(foldedName) {
-		if token == foldedQuery {
-			return 450
-		}
-	}
-	if strings.HasPrefix(foldedName, foldedQuery+" ") {
-		return 400
-	}
-	for _, token := range strings.Fields(foldedName) {
-		if strings.HasPrefix(token, foldedQuery) {
-			return 300
-		}
-	}
-	if strings.Contains(foldedName, foldedQuery) {
-		return 200
-	}
-	return 0
-}
-
-func foldSearchText(s string) string {
-	decomposed := norm.NFD.String(strings.ToLower(strings.TrimSpace(s)))
-	var builder strings.Builder
-	spacePending := false
-	for _, character := range decomposed {
-		switch {
-		case unicode.Is(unicode.Mn, character):
-			continue
-		case unicode.IsLetter(character) || unicode.IsDigit(character):
-			builder.WriteRune(character)
-			spacePending = false
-		default:
-			if builder.Len() > 0 && !spacePending {
-				builder.WriteByte(' ')
-				spacePending = true
-			}
-		}
-	}
-	return strings.TrimSpace(builder.String())
 }
 
 // Status reports the account/plan and request quota (api-football /status).

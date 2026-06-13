@@ -13,7 +13,6 @@
 	let botLeague = $state('');
 	let chatCount = $state(6);
 	let chatLeague = $state('');
-	let topscorers = $state<{ id: string; name: string; goals: number }[]>([]);
 	let leagues = $state<LeagueSummary[]>([]);
 	$effect(() => {
 		if (serverClock.dev) {
@@ -23,10 +22,6 @@
 					(r) =>
 						(leagues = r.leagues.filter((league) => league.inviteCode !== 'GLOBAL'))
 				)
-				.catch(() => {});
-			api
-				.devTopscorers()
-				.then((r) => (topscorers = r.players))
 				.catch(() => {});
 		}
 	});
@@ -61,23 +56,6 @@
 				`Sendte ${result.sent} botmelding${result.sent === 1 ? '' : 'ar'}.`,
 				`Sent ${result.sent} bot message${result.sent === 1 ? '' : 's'}.`
 			);
-		} catch (e: unknown) {
-			msgTone = 'error';
-			msg = (e as { message?: string })?.message ?? language.text('Feilet', 'Feila', 'Failed');
-		} finally {
-			busy = false;
-		}
-	}
-
-	async function saveTopscorers() {
-		busy = true;
-		msg = '';
-		try {
-			const map: Record<string, number> = {};
-			for (const ts of topscorers) map[ts.id] = ts.goals;
-			await api.devSetTopscorers(map);
-			msgTone = 'ok';
-			msg = language.text('Toppscorere lagret.', 'Toppscorarar lagra.', 'Top scorers saved.');
 		} catch (e: unknown) {
 			msgTone = 'error';
 			msg = (e as { message?: string })?.message ?? language.text('Feilet', 'Feila', 'Failed');
@@ -274,28 +252,6 @@
 	</section>
 
 	<section class="card">
-		<h3>{language.text('Toppscorere', 'Toppscorarar', 'Top scorers')}</h3>
-		<p class="muted small">
-			{language.text('Sett mål for de forhåndsvalgte kandidatene for å se hvordan det påvirker tabellen.', 'Sett mål for dei forhandsvalde kandidatane for å sjå korleis det påverkar tabellen.', 'Set goals for the seeded candidates to see how it affects the leaderboard.')}
-		</p>
-		<div class="ts-grid">
-			{#each topscorers as ts (ts.id)}
-				<div class="field horiz">
-					<label for="ts-{ts.id}">{ts.name}</label>
-					<input id="ts-{ts.id}" class="input narrow digits" type="number" min="0" max="25" bind:value={ts.goals} />
-				</div>
-			{/each}
-		</div>
-		{#if topscorers.length > 0}
-			<button class="btn" disabled={busy} onclick={saveTopscorers}>
-				{language.text('Lagre mål', 'Lagre mål', 'Save goals')}
-			</button>
-		{:else}
-			<p class="muted small">{language.text('Ingen forhåndsvalgte spillere funnet. Sørg for at databasen er fylt.', 'Ingen forhandsvalde spelarar funne. Sørg for at databasen er fylt.', 'No seeded players found. Ensure database is populated.')}</p>
-		{/if}
-	</section>
-
-	<section class="card">
 		<h3>{language.text('Nullstill', 'Nullstill', 'Reset')}</h3>
 		<p class="muted small">
 			{language.text('Tøm alle resultater og den simulerte klokken (tilbake til sanntid).', 'Tøm alle resultat og den simulerte klokka (tilbake til sanntid).', 'Clear all results and the simulated clock (back to real time).')}
@@ -351,20 +307,5 @@
 	.notice {
 		color: var(--accent);
 		font-size: 0.9rem;
-	}
-	.horiz {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 0.5rem;
-	}
-	.ts-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-		gap: 0 1.5rem;
-		margin-bottom: 1rem;
-	}
-	.narrow {
-		width: 70px;
 	}
 </style>

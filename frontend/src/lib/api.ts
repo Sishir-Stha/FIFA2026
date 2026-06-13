@@ -51,35 +51,6 @@ export interface LeaderboardRow {
 	rankDelta: number; // +N = moved up N spots since last matchday, 0 = no change or no data
 }
 
-export interface GoldenBootPlayer {
-	id: string;
-	name: string;
-	teamId: string;
-	teamName: string;
-	photoUrl?: string;
-	goals: number;
-	assists: number;
-	rank: number;
-	eligible: boolean;
-	seeded: boolean;
-	syncedAt?: string;
-}
-
-export interface GoldenBootPickUser {
-	id: string;
-	name: string;
-	avatarUrl: string | null;
-}
-
-export interface GoldenBootLeaguePlayer extends GoldenBootPlayer {
-	picks: GoldenBootPickUser[];
-}
-
-export interface GoldenBootLeagueTable {
-	players: GoldenBootLeaguePlayer[];
-	updatedAt?: string;
-}
-
 export interface ChatOverviewUser {
 	id: string;
 	name: string;
@@ -164,6 +135,7 @@ export interface PlayerStatsLargestMiss {
 export interface PlayerStats {
 	tipsPredicted: number;
 	tipsScored: number;
+	points: number;
 	hitRate: PlayerStatsHitRate;
 	longestStreak: number;
 	currentStreak: number;
@@ -184,12 +156,6 @@ export interface CrowdDistribution {
 		draw: CrowdOutcome;
 		away: CrowdOutcome;
 	};
-}
-
-export interface DevTopscorer {
-	id: string;
-	name: string;
-	goals: number;
 }
 
 export const api = {
@@ -233,15 +199,10 @@ export const api = {
 			league: { id: string; name: string };
 			rows: LeaderboardRow[];
 			scoring?: Record<string, unknown>;
-			goldenBoot?: GoldenBootLeagueTable;
 		}>(`/api/leagues/${id}/leaderboard`),
 	leagueProgress: (id: string) =>
 		get<LeagueProgress>(`/api/leagues/${id}/progress`),
 	playerStats: () => get<PlayerStats>('/api/player/me/stats'),
 	matchCrowd: (matchId: string) =>
-		get<CrowdDistribution>(`/api/tips/crowd/${matchId}`),
-	devTopscorers: () =>
-		get<{ players: DevTopscorer[] }>('/api/dev/topscorers'),
-	devSetTopscorers: (players: Record<string, number>) =>
-		post<{ status: string }>('/api/dev/topscorers', { players }),
+		get<CrowdDistribution>(`/api/tips/crowd/${matchId}`)
 };

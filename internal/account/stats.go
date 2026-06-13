@@ -20,12 +20,13 @@ type scoreComponents struct {
 
 // PlayerStats is the payload for GET /api/player/me/stats.
 type PlayerStats struct {
-	TipsPredicted  int          `json:"tipsPredicted"`
-	TipsScored     int          `json:"tipsScored"`
-	HitRate        HitRate      `json:"hitRate"`
-	LongestStreak  int          `json:"longestStreak"`
-	CurrentStreak  int          `json:"currentStreak"`
-	LargestMiss    *LargestMiss `json:"largestMiss,omitempty"`
+	TipsPredicted int          `json:"tipsPredicted"`
+	TipsScored    int          `json:"tipsScored"`
+	Points        int          `json:"points"`
+	HitRate       HitRate      `json:"hitRate"`
+	LongestStreak int          `json:"longestStreak"`
+	CurrentStreak int          `json:"currentStreak"`
+	LargestMiss   *LargestMiss `json:"largestMiss,omitempty"`
 }
 
 type HitRate struct {
@@ -51,11 +52,11 @@ type LargestMiss struct {
 
 // computePlayerStats is the pure aggregation for testability.
 type scoredMatch struct {
-	matchID  string
-	kickoff  string // RFC3339; only used for ordering
-	points   int
-	exact    bool
-	gdDev    int
+	matchID string
+	kickoff string // RFC3339; only used for ordering
+	points  int
+	exact   bool
+	gdDev   int
 }
 
 func computePlayerStats(scored []scoredMatch) PlayerStats {
@@ -73,6 +74,7 @@ func computePlayerStats(scored []scoredMatch) PlayerStats {
 	var maxMiss int
 	var currentRun, bestRun int
 	for i, s := range scored {
+		stats.Points += s.points
 		if s.exact {
 			stats.HitRate.Count++
 		}

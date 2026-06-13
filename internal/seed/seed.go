@@ -375,7 +375,6 @@ const DefaultScoringConfig = `{
     "groupPosition": 1,
     "perfectGroupBonus": 2,
     "advance": 1,
-		"goldenBootWinner": 15,
     "round": { "R32": 1, "R16": 2, "QF": 3, "SF": 5, "FINAL": 8, "CHAMPION": 13 }
   },
   "tiebreakers": ["points", "exactScores", "correctWinners", "goalDiffDeviation", "fewestTips", "earliestEdit"]

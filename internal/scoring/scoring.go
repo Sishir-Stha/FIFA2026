@@ -17,7 +17,6 @@ import (
 
 	"github.com/oyvhov/world-cup-pool/internal/bracket"
 	"github.com/oyvhov/world-cup-pool/internal/standings"
-	"github.com/oyvhov/world-cup-pool/internal/topscorer"
 )
 
 // ---- Config ----
@@ -33,7 +32,6 @@ type Config struct {
 		GroupPosition     int            `json:"groupPosition"`     // per exact final position
 		PerfectGroupBonus int            `json:"perfectGroupBonus"` // whole group perfect
 		Advance           int            `json:"advance"`           // per predicted advancer that advances
-		GoldenBootWinner  int            `json:"goldenBootWinner"`  // correct Golden Boot winner
 		Round             map[string]int `json:"round"`             // predicted team reaching a KO round
 	} `json:"forecast"`
 }
@@ -44,9 +42,6 @@ func loadConfig(rec *core.Record) Config {
 	// Backward-compat default for configs predating the "advance" rule.
 	if c.Forecast.Advance == 0 {
 		c.Forecast.Advance = 1
-	}
-	if c.Forecast.GoldenBootWinner == 0 {
-		c.Forecast.GoldenBootWinner = 15
 	}
 	return c
 }
@@ -414,21 +409,19 @@ func koStableKey(m *core.Record) string {
 
 type fcBreakdown struct {
 	// Points.
-	Groups     int `json:"groups"`   // exact final positions (+ perfect bonus)
-	Advance    int `json:"advance"`  // predicted advancers that actually advanced
-	Knockout   int `json:"knockout"` // predicted teams reaching KO rounds
-	Champion   int `json:"champion"`
-	GoldenBoot int `json:"goldenBoot"`
+	Groups   int `json:"groups"`   // exact final positions (+ perfect bonus)
+	Advance  int `json:"advance"`  // predicted advancers that actually advanced
+	Knockout int `json:"knockout"` // predicted teams reaching KO rounds
+	Champion int `json:"champion"`
 	// Correct-pick counts (for the Forecast leaderboard view).
-	GroupsCorrect     int            `json:"groupsCorrect"`
-	AdvanceCorrect    int            `json:"advanceCorrect"`
-	RoundCorrect      map[string]int `json:"roundCorrect"` // R32..FINAL
-	ChampionCorrect   int            `json:"championCorrect"`
-	GoldenBootCorrect int            `json:"goldenBootCorrect"`
+	GroupsCorrect   int            `json:"groupsCorrect"`
+	AdvanceCorrect  int            `json:"advanceCorrect"`
+	RoundCorrect    map[string]int `json:"roundCorrect"` // R32..FINAL
+	ChampionCorrect int            `json:"championCorrect"`
 }
 
 func (b fcBreakdown) total() int {
-	return b.Groups + b.Advance + b.Knockout + b.Champion + b.GoldenBoot
+	return b.Groups + b.Advance + b.Knockout + b.Champion
 }
 
 func scoreForecast(app core.App, cfg Config, fc *core.Record) (fcBreakdown, int) {
@@ -532,14 +525,6 @@ func scoreForecast(app core.App, cfg Config, fc *core.Record) (fcBreakdown, int)
 		if champKey != "" && bracket[champKey] == actualChamp {
 			b.Champion += cfg.Forecast.Round["CHAMPION"]
 			b.ChampionCorrect = 1
-		}
-	}
-
-	if tournamentComplete(app) {
-		winnerID := topscorer.WinnerID(app)
-		if winnerID != "" && topscorer.PickFromForecast(fc) == winnerID {
-			b.GoldenBoot = cfg.Forecast.GoldenBootWinner
-			b.GoldenBootCorrect = 1
 		}
 	}
 
