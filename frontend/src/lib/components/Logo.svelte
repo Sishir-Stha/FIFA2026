@@ -13,11 +13,13 @@
 
 <a class="logo" class:compact class:hero={variant === 'hero'} href="/" aria-label={`Yeti Airlines — ${t.nav.home.toLowerCase()}`}>
 	<span class="brand-plate">
-		<img
-			class="brand-image"
-			src={compact ? '/logos/yeti-airlines-mark.svg' : '/logos/yeti-airlines-logo.svg'}
-			alt=""
-		/>
+		<span class="brand-crop">
+			<img
+				class="brand-image"
+				src="/logos/yeti-airlines-wide.png"
+				alt=""
+			/>
+		</span>
 	</span>
 	{#if variant === 'hero' && tagline}<span class="tagline">{tagline}</span>{/if}
 </a>
@@ -38,6 +40,10 @@
 		border-radius: 14px;
 		background: #fff;
 		box-shadow: 0 10px 28px -20px rgba(0, 86, 44, 0.55);
+	}
+	.brand-crop {
+		display: block;
+		width: 100%;
 	}
 	.brand-image {
 		width: 100%;
@@ -71,5 +77,18 @@
 		height: 42px;
 		padding: 0.1rem;
 		border-radius: 13px;
+	}
+	.logo.compact .brand-crop {
+		position: relative;
+		width: 38px;
+		height: 34px;
+		overflow: hidden;
+	}
+	.logo.compact .brand-image {
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: auto;
+		max-width: none;
+		height: 100%;
 	}
 </style>

@@ -13,7 +13,6 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -540,68 +539,4 @@ func Register(app core.App, se *core.ServeEvent) {
 		return e.JSON(http.StatusOK, state(app))
 	})
 
-	g.GET("/topscorers", func(e *core.RequestEvent) error {
-		records, err := app.FindRecordsByFilter("golden_boot_players", "seeded = true || goals > 0", "name", 0, 0)
-		if err != nil {
-			return err
-		}
-		var out []map[string]any
-		for _, r := range records {
-			out = append(out, map[string]any{
-				"id":    r.Id,
-				"name":  r.GetString("name"),
-				"goals": r.GetInt("goals"),
-			})
-		}
-		return e.JSON(http.StatusOK, map[string]any{"players": out})
-	})
-
-	g.POST("/topscorers", func(e *core.RequestEvent) error {
-		var body struct {
-			Players map[string]int `json:"players"` // id -> goals
-		}
-		if err := e.BindBody(&body); err != nil {
-			return err
-		}
-		records, err := app.FindRecordsByFilter("golden_boot_players", "id != ''", "", 0, 0)
-		if err != nil {
-			return err
-		}
-		for _, r := range records {
-			if goals, ok := body.Players[r.Id]; ok {
-				r.Set("goals", goals)
-			}
-		}
-
-		sort.Slice(records, func(i, j int) bool {
-			if records[i].GetInt("goals") != records[j].GetInt("goals") {
-				return records[i].GetInt("goals") > records[j].GetInt("goals")
-			}
-			return records[i].GetString("name") < records[j].GetString("name")
-		})
-
-		rank := 0
-		lastGoals := -1
-		for i, r := range records {
-			g := r.GetInt("goals")
-			newRank := 0
-			if g > 0 {
-				if g != lastGoals {
-					rank = i + 1
-					lastGoals = g
-				}
-				newRank = rank
-			}
-
-			_, inBody := body.Players[r.Id]
-			if inBody || r.GetInt("rank") != newRank {
-				r.Set("rank", newRank)
-				r.Set("syncedAt", time.Now().UTC())
-				if err := app.Save(r); err != nil {
-					return err
-				}
-			}
-		}
-		return e.JSON(http.StatusOK, map[string]string{"status": "ok"})
-	})
 }

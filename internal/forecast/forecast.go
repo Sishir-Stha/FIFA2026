@@ -15,7 +15,6 @@ import (
 
 	"github.com/oyvhov/world-cup-pool/internal/bracket"
 	"github.com/oyvhov/world-cup-pool/internal/clock"
-	"github.com/oyvhov/world-cup-pool/internal/topscorer"
 )
 
 // tournamentStart returns the earliest match kickoff (the global Forecast
@@ -74,22 +73,6 @@ func validate(app core.App, rec *core.Record) error {
 	}
 	if locked(app) {
 		return apis.NewBadRequestError("the tournament has started — the Forecast is locked", nil)
-	}
-	var goldenBootPicks []string
-	_ = rec.UnmarshalJSONField("goldenBootPicks", &goldenBootPicks)
-	if len(goldenBootPicks) == 0 && rec.GetString("goldenBootPlayer") != "" {
-		goldenBootPicks = []string{rec.GetString("goldenBootPlayer")}
-	}
-	if len(goldenBootPicks) > 1 {
-		return apis.NewBadRequestError("choose only one Golden Boot player", nil)
-	}
-	for _, playerID := range goldenBootPicks {
-		if playerID == "" {
-			continue
-		}
-		if !topscorer.IsEligible(app, playerID) {
-			return apis.NewBadRequestError("the Golden Boot player is not on the shortlist", nil)
-		}
 	}
 	groups, err := groupTeams(app)
 	if err != nil {
@@ -187,10 +170,9 @@ func Register(app core.App, se *core.ServeEvent) {
 		_ = fc.UnmarshalJSONField("thirdQualifiers", &thirds)
 		_ = fc.UnmarshalJSONField("bracket", &bracket)
 		out["forecast"] = map[string]any{
-			"groupOrder":       order,
-			"thirdQualifiers":  thirds,
-			"bracket":          bracket,
-			"goldenBootPlayer": topscorer.PickFromForecast(fc),
+			"groupOrder":      order,
+			"thirdQualifiers": thirds,
+			"bracket":         bracket,
 		}
 		return e.JSON(http.StatusOK, out)
 	}).Bind(apis.RequireAuth())
@@ -240,11 +222,6 @@ func Register(app core.App, se *core.ServeEvent) {
 			}
 		}
 
-		goldenBoot, err := topscorer.ForecastPayload(app)
-		if err != nil {
-			return err
-		}
-
 		ts, _ := tournamentStart(app)
 		return e.JSON(http.StatusOK, map[string]any{
 			"groups":          gOut,
@@ -253,7 +230,6 @@ func Register(app core.App, se *core.ServeEvent) {
 			"thirdTable":      bracket.Table(),
 			"tournamentStart": ts,
 			"locked":          locked(app),
-			"goldenBoot":      goldenBoot,
 		})
 	}).Bind(apis.RequireAuth())
 }

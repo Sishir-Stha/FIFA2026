@@ -26,7 +26,6 @@ import (
 	"github.com/oyvhov/world-cup-pool/internal/seed"
 	wmsync "github.com/oyvhov/world-cup-pool/internal/sync"
 	"github.com/oyvhov/world-cup-pool/internal/tips"
-	"github.com/oyvhov/world-cup-pool/internal/topscorer"
 	"github.com/oyvhov/world-cup-pool/internal/web"
 	_ "github.com/oyvhov/world-cup-pool/migrations"
 )
@@ -81,7 +80,6 @@ func main() {
 		oauth.Register(e.App)
 		wmsync.Register(e.App, e)
 		wmOdds.Register(e.App, e)
-		topscorer.Register(e.App, e)
 		leagues.Register(e.App, e)
 		tips.Register(e.App, e)
 		forecast.Register(e.App, e)
